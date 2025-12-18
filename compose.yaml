@@ -6,5 +6,8 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - /path/to/cache:/app/cache # optional, make cached films persistent
+      - cache:/app/cache # optional, make cached films persistent
     restart: unless-stopped
+
+volumes:
+  cache:

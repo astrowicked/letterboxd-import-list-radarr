@@ -9,7 +9,9 @@ RUN cd /app && \
   bun run build
 
 FROM base AS release
-RUN chown bun: /app
+RUN mkdir -p /app/cache && \
+  chown -R bun: /app
+
 COPY package.json .
 COPY --from=install /app/out out
 COPY --from=install /app/drizzle drizzle

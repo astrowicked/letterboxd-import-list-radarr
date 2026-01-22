@@ -26,7 +26,13 @@ export async function getTmdbId(letterboxdItem: LetterboxdItem): Promise<number 
     const tmdbId = extractTmdbId(html);
     if (tmdbId !== null) {
         logger.success(`Found TMDB id for film ${letterboxdItem.link} (${letterboxdItem.id}) [tmdb:${tmdbId}]`);
-        await db.insert(ids).values({ letterboxdId: letterboxdItem.id, tmdbId: tmdbId });
+        try {
+            await db.insert(ids).values({ letterboxdId: letterboxdItem.id, tmdbId: tmdbId });
+        } catch (error) {
+            logger.error(
+                `Failed to insert into cache for film ${letterboxdItem.link} (${letterboxdItem.id}) [tmdb:${tmdbId}]`,
+            );
+        }
     } else {
         logger.fail(`Could not find TMDB id for film ${letterboxdItem.link} (${letterboxdItem.id})`);
     }

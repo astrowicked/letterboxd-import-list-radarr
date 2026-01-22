@@ -2,7 +2,6 @@ import { getTmdbId } from "./cache";
 import { fetchHtml } from "./fetch";
 import { logger } from "./logger";
 import { getFilmsOnPage, getNumberOfPages } from "./parse";
-import type { LetterboxdItem } from "./types";
 
 const server = Bun.serve({
     hostname: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
@@ -28,31 +27,15 @@ async function handleRequest(req: Request): Promise<Response> {
     const numberOfPages = getNumberOfPages(html);
     logger.debug(`List ${path} has ${numberOfPages} page(s)`);
 
-    let letterboxdItems: LetterboxdItem[];
+    const paths = Array.from(Array(numberOfPages).keys(), (index) => `${path}/page/${index + 1}/`);
+    const pagesPromises = paths.map(async (p, index) => {
+        // html for the first page is already fetched
+        return getFilmsOnPage(index === 0 ? html : await fetchHtml(p));
+    });
 
-    if (numberOfPages === 1) {
-        letterboxdItems = getFilmsOnPage(html);
-    } else {
-        const paths = Array.from(Array(numberOfPages).keys(), (index) => `${path}/page/${index + 1}`);
-
-        const pagePromises = paths.map(async (p, index) => {
-            // html for the first page is already fetched
-            if (index === 0) {
-                const filmsOnPage = getFilmsOnPage(html);
-                logger.debug(`Found ${filmsOnPage.length} film(s) on page ${p}`);
-                return filmsOnPage;
-            }
-            const filmsOnPage = getFilmsOnPage(await fetchHtml(p));
-            logger.debug(`Found ${filmsOnPage.length} film(s) on page ${p}`);
-            return filmsOnPage;
-        });
-
-        const pages = await Promise.all(pagePromises);
-        letterboxdItems = pages.flat(1);
-    }
-
-    // filter duplicate films out
-    letterboxdItems = [...new Map(letterboxdItems.map((item) => [item.id, item])).values()];
+    const pages = await Promise.all(pagesPromises);
+    const letterboxdItems = pages.flat(1);
+    logger.debug(`Found ${letterboxdItems.length} films for list ${path}`);
 
     const importList = (await Promise.all(letterboxdItems.map(getTmdbId)))
         .filter((id) => id !== null)
@@ -62,10 +45,8 @@ async function handleRequest(req: Request): Promise<Response> {
     if (importList.length === 0) {
         const searchParams = new URL(req.url).searchParams;
         if (!searchParams.has("allow-empty-list")) {
-            logger.error(`Found 0 films in list ${path} and \`?allow-empty-list\` is not set`);
-            return new Response(
-                "Internal error: Found 0 films in list. If this is expected consider appending `?allow-empty-list` to the request URL to prevent future errors.",
-                { status: 500 },
+            throw new Error(
+                "Found 0 films in list. If this is expected consider appending `?allow-empty-list` to the request URL to prevent future errors.",
             );
         }
     }

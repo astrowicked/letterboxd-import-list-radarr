@@ -4,6 +4,8 @@ Allows you to add a Letterboxd list as import list in Radarr.
 
 Works pretty much the same as [screeny05/letterboxd-list-radarr](https://github.com/screeny05/letterboxd-list-radarr), but I wanted something better suitable for self-hosting. And I wanted to try [Bun](https://bun.com/)!
 
+> **NOTE:** Since January 20th Letterboxd has stated using Cloudflare to protect their pages from being scraped, while still offering no public API. [FlareSolverr](https://github.com/FlareSolverr/FlareSolverr) is now required to run this application.
+
 ## Installation
 
 Spin up the container on its own using the [compose.yaml](compose.yaml) or add it to the compose file of your radarr instance:
@@ -18,12 +20,26 @@ services:
       - /path/to/cache:/app/cache # optional, make cached films persistent
     restart: unless-stopped
 
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr
+    restart: unless-stopped
+
   radarr:
     image: lscr.io/linuxserver/radarr
     ...
 ```
 
-## Add list to Radarr
+## Configuration
+
+The following environment variables are available:
+
+| variable         | default                    |
+| ---------------- | -------------------------- |
+| TZ               | `UTC`                      |
+| LOG_LEVEL        | `info`                     |
+| FLARESOLVERR_URL | `http://flaresolverr:8191` |
+
+### Add list to Radarr
 
 1. In Radarr, go to Settings > Import Lists and add a new list using Custom Lists provider.
 1. Set List URL to the Letterboxd list you want to add. Change the https://letterboxd.com/ to http://letterboxd-import-list-radarr:3000/.

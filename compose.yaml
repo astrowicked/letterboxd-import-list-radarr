@@ -9,5 +9,9 @@ services:
       - cache:/app/cache # optional, make cached films persistent
     restart: unless-stopped
 
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr
+    restart: unless-stopped
+
 volumes:
   cache:

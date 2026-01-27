@@ -1,12 +1,13 @@
 import { getTmdbId } from "./cache";
-import { fetchHtml } from "./fetch";
+import { createSession, destroySession, fetchHtml } from "./fetch";
 import { logger } from "./logger";
 import { getFilmsOnPage, getNumberOfPages } from "./parse";
+import type { ImportListItem } from "./types";
 
 const server = Bun.serve({
     hostname: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
     development: process.env.NODE_ENV !== "production",
-    port: 3000,
+    port: process.env.NODE_ENV === "production" ? 80 : 3000,
     idleTimeout: 60,
     fetch: handleRequest,
     error(error) {
@@ -22,25 +23,37 @@ async function handleRequest(req: Request): Promise<Response> {
     const path = url.pathname;
     logger.info(`${req.method} ${path}`);
 
-    const html = await fetchHtml(path);
+    const sessionId = `lilr${path}`;
+    logger.info(`Creating FlareSolverr session ${sessionId}`);
+    await createSession(sessionId);
+
+    const html = await fetchHtml(path, sessionId);
 
     const numberOfPages = getNumberOfPages(html);
     logger.debug(`List ${path} has ${numberOfPages} page(s)`);
 
-    const paths = Array.from(Array(numberOfPages).keys(), (index) => `${path}/page/${index + 1}/`);
-    const pagesPromises = paths.map(async (p, index) => {
-        // html for the first page is already fetched
-        return getFilmsOnPage(index === 0 ? html : await fetchHtml(p));
-    });
+    const importList: ImportListItem[] = [];
 
-    const pages = await Promise.all(pagesPromises);
-    const letterboxdItems = pages.flat(1);
-    logger.debug(`Found ${letterboxdItems.length} films for list ${path}`);
+    for (let pageNumber = 1; pageNumber <= numberOfPages; pageNumber++) {
+        const pagePath = pageNumber === 1 ? path : `${path}/page/${pageNumber}/`;
+        logger.info(`Fetching films on ${pagePath}`);
+        const pageHtml = pageNumber === 1 ? html : await fetchHtml(pagePath, sessionId);
 
-    const importList = (await Promise.all(letterboxdItems.map(getTmdbId)))
-        .filter((id) => id !== null)
-        .map((id) => ({ id }));
+        const filmsOnPage = getFilmsOnPage(pageHtml);
+        logger.debug(`Found ${filmsOnPage.length} films on ${pagePath}`);
+
+        for (const film of filmsOnPage) {
+            const tmdbId = await getTmdbId(film, sessionId);
+            if (tmdbId !== null) {
+                importList.push({ id: tmdbId });
+            }
+        }
+    }
+
     logger.debug(`Matched ${importList.length} TMDB id(s) for list ${path}`);
+
+    logger.info(`Destroying FlareSolverr session ${sessionId}`);
+    await destroySession(sessionId);
 
     if (importList.length === 0) {
         const searchParams = new URL(req.url).searchParams;

@@ -1,6 +1,6 @@
 {
   "name": "letterboxd-import-list-radarr",
-  "version": "2.0",
+  "version": "2.1",
   "homepage": "https://github.com/heinheinhein/letterboxd-import-list-radarr",
   "module": "src/index.ts",
   "type": "module",

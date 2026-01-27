@@ -1,12 +1,6 @@
 import robotsParser, { type Robot } from "robots-parser";
-import pThrottle from "p-throttle";
 import { logger } from "./logger";
 import type { FlareSolverrResponse } from "./types";
-
-const throttle = pThrottle({
-    limit: 3,
-    interval: 1000,
-});
 
 const flaresolverrBaseUrl = process.env.FLARESOLVERR_URL || "http://flaresolverr:8191";
 const flaresolverrUrl = `${flaresolverrBaseUrl}/v1`;
@@ -23,7 +17,7 @@ try {
     throw error;
 }
 
-async function _fetchHtml(path: string): Promise<string> {
+export async function fetchHtml(path: string, sessionId: string): Promise<string> {
     const url = baseUrl + path;
 
     if (robots === undefined || robots.isDisallowed(url)) {
@@ -39,6 +33,8 @@ async function _fetchHtml(path: string): Promise<string> {
         body: JSON.stringify({
             cmd: "request.get",
             url: url,
+            disableMedia: true,
+            session: sessionId,
         }),
     });
     if (!res.ok) {
@@ -61,4 +57,28 @@ async function _fetchHtml(path: string): Promise<string> {
     return flaresolverrJson.solution.response;
 }
 
-export const fetchHtml = throttle(_fetchHtml);
+export async function createSession(sessionId: string): Promise<void> {
+    await fetch(flaresolverrUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            cmd: "sessions.create",
+            session: sessionId,
+        }),
+    });
+}
+
+export async function destroySession(sessionId: string): Promise<void> {
+    await fetch(flaresolverrUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            cmd: "sessions.destroy",
+            session: sessionId,
+        }),
+    });
+}

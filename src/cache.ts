@@ -12,7 +12,7 @@ const sqlite = new Database("cache/cache.sqlite", { strict: true });
 const db = drizzle({ client: sqlite, casing: "snake_case" });
 migrate(db, { migrationsFolder: "drizzle" });
 
-export async function getTmdbId(letterboxdItem: LetterboxdItem): Promise<number | null> {
+export async function getTmdbId(letterboxdItem: LetterboxdItem, sessionId: string): Promise<number | null> {
     const storedIds = await db.select().from(ids).where(eq(ids.letterboxdId, letterboxdItem.id)).limit(1);
 
     if (storedIds[0] !== undefined) {
@@ -22,11 +22,17 @@ export async function getTmdbId(letterboxdItem: LetterboxdItem): Promise<number 
 
     logger.debug(`Film not in cache ${letterboxdItem.link} (${letterboxdItem.id})`);
 
-    const html = await fetchHtml(letterboxdItem.link);
+    const html = await fetchHtml(letterboxdItem.link, sessionId);
     const tmdbId = extractTmdbId(html);
     if (tmdbId !== null) {
         logger.success(`Found TMDB id for film ${letterboxdItem.link} (${letterboxdItem.id}) [tmdb:${tmdbId}]`);
-        await db.insert(ids).values({ letterboxdId: letterboxdItem.id, tmdbId: tmdbId });
+        try {
+            await db.insert(ids).values({ letterboxdId: letterboxdItem.id, tmdbId: tmdbId });
+        } catch (error) {
+            logger.error(
+                `Failed to insert into cache for film ${letterboxdItem.link} (${letterboxdItem.id}) [tmdb:${tmdbId}]`,
+            );
+        }
     } else {
         logger.fail(`Could not find TMDB id for film ${letterboxdItem.link} (${letterboxdItem.id})`);
     }

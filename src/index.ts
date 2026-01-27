@@ -1,13 +1,13 @@
 import { getTmdbId } from "./cache";
-import { fetchHtml } from "./fetch";
+import { createSession, destroySession, fetchHtml } from "./fetch";
 import { logger } from "./logger";
 import { getFilmsOnPage, getNumberOfPages } from "./parse";
-import type { LetterboxdItem } from "./types";
+import type { ImportListItem } from "./types";
 
 const server = Bun.serve({
     hostname: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
     development: process.env.NODE_ENV !== "production",
-    port: 3000,
+    port: process.env.NODE_ENV === "production" ? 80 : 3000,
     idleTimeout: 60,
     fetch: handleRequest,
     error(error) {
@@ -23,49 +23,43 @@ async function handleRequest(req: Request): Promise<Response> {
     const path = url.pathname;
     logger.info(`${req.method} ${path}`);
 
-    const html = await fetchHtml(path);
+    const sessionId = `lilr${path}`;
+    logger.info(`Creating FlareSolverr session ${sessionId}`);
+    await createSession(sessionId);
+
+    const html = await fetchHtml(path, sessionId);
 
     const numberOfPages = getNumberOfPages(html);
     logger.debug(`List ${path} has ${numberOfPages} page(s)`);
 
-    let letterboxdItems: LetterboxdItem[];
+    const importList: ImportListItem[] = [];
 
-    if (numberOfPages === 1) {
-        letterboxdItems = getFilmsOnPage(html);
-    } else {
-        const paths = Array.from(Array(numberOfPages).keys(), (index) => `${path}/page/${index + 1}`);
+    for (let pageNumber = 1; pageNumber <= numberOfPages; pageNumber++) {
+        const pagePath = pageNumber === 1 ? path : `${path}/page/${pageNumber}/`;
+        logger.info(`Fetching films on ${pagePath}`);
+        const pageHtml = pageNumber === 1 ? html : await fetchHtml(pagePath, sessionId);
 
-        const pagePromises = paths.map(async (p, index) => {
-            // html for the first page is already fetched
-            if (index === 0) {
-                const filmsOnPage = getFilmsOnPage(html);
-                logger.debug(`Found ${filmsOnPage.length} film(s) on page ${p}`);
-                return filmsOnPage;
+        const filmsOnPage = getFilmsOnPage(pageHtml);
+        logger.debug(`Found ${filmsOnPage.length} films on ${pagePath}`);
+
+        for (const film of filmsOnPage) {
+            const tmdbId = await getTmdbId(film, sessionId);
+            if (tmdbId !== null) {
+                importList.push({ id: tmdbId });
             }
-            const filmsOnPage = getFilmsOnPage(await fetchHtml(p));
-            logger.debug(`Found ${filmsOnPage.length} film(s) on page ${p}`);
-            return filmsOnPage;
-        });
-
-        const pages = await Promise.all(pagePromises);
-        letterboxdItems = pages.flat(1);
+        }
     }
 
-    // filter duplicate films out
-    letterboxdItems = [...new Map(letterboxdItems.map((item) => [item.id, item])).values()];
-
-    const importList = (await Promise.all(letterboxdItems.map(getTmdbId)))
-        .filter((id) => id !== null)
-        .map((id) => ({ id }));
     logger.debug(`Matched ${importList.length} TMDB id(s) for list ${path}`);
+
+    logger.info(`Destroying FlareSolverr session ${sessionId}`);
+    await destroySession(sessionId);
 
     if (importList.length === 0) {
         const searchParams = new URL(req.url).searchParams;
         if (!searchParams.has("allow-empty-list")) {
-            logger.error(`Found 0 films in list ${path} and \`?allow-empty-list\` is not set`);
-            return new Response(
-                "Internal error: Found 0 films in list. If this is expected consider appending `?allow-empty-list` to the request URL to prevent future errors.",
-                { status: 500 },
+            throw new Error(
+                "Found 0 films in list. If this is expected consider appending `?allow-empty-list` to the request URL to prevent future errors.",
             );
         }
     }

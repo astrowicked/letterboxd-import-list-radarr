@@ -1,106 +1,28 @@
 [
-    {
-        "id": 48532,
-        "link": "/film/the-umbrellas-of-cherbourg/"
-    },
-    {
-        "id": 50258,
-        "link": "/film/the-young-girls-of-rochefort/"
-    },
-    {
-        "id": 48788,
-        "link": "/film/donkey-skin/"
-    },
-    {
-        "id": 24325,
-        "link": "/film/lola/"
-    },
-    {
-        "id": 5848,
-        "link": "/film/bay-of-angels/"
-    },
-    {
-        "id": 72618,
-        "link": "/film/model-shop/"
-    },
-    {
-        "id": 49425,
-        "link": "/film/a-room-in-town-1982/"
-    },
-    {
-        "id": 31078,
-        "link": "/film/lady-oscar/"
-    },
-    {
-        "id": 96044,
-        "link": "/film/a-slightly-pregnant-man/"
-    },
-    {
-        "id": 134373,
-        "link": "/film/the-pied-piper-1972/"
-    },
-    {
-        "id": 188297,
-        "link": "/film/dead-horizons/"
-    },
-    {
-        "id": 56599,
-        "link": "/film/the-seven-deadly-sins/"
-    },
-    {
-        "id": 144756,
-        "link": "/film/parking-1985/"
-    },
-    {
-        "id": 789054,
-        "link": "/film/lust-1962/"
-    },
-    {
-        "id": 144618,
-        "link": "/film/le-sabotier-du-val-de-loire/"
-    },
-    {
-        "id": 85350,
-        "link": "/film/three-seats-for-the-26th/"
-    },
-    {
-        "id": 114713,
-        "link": "/film/le-bel-indifferent/"
-    },
-    {
-        "id": 144617,
-        "link": "/film/ars/"
-    },
-    {
-        "id": 599,
-        "link": "/film/turning-table/"
-    },
-    {
-        "id": 144757,
-        "link": "/film/break-of-day/"
-    },
-    {
-        "id": 384075,
-        "link": "/film/la-ballerine/"
-    },
-    {
-        "id": 384074,
-        "link": "/film/attaque-nocturne/"
-    },
-    {
-        "id": 383970,
-        "link": "/film/le-pont-de-mauves/"
-    },
-    {
-        "id": 561779,
-        "link": "/film/musee-grevin/"
-    },
-    {
-        "id": 561780,
-        "link": "/film/la-mere-et-lenfant/"
-    },
-    {
-        "id": 1323084,
-        "link": "/film/un-regard-sur-la-hollande/"
-    }
+    "/film/the-umbrellas-of-cherbourg/",
+    "/film/the-young-girls-of-rochefort/",
+    "/film/donkey-skin/",
+    "/film/lola/",
+    "/film/bay-of-angels/",
+    "/film/model-shop/",
+    "/film/lady-oscar/",
+    "/film/a-room-in-town-1982/",
+    "/film/a-slightly-pregnant-man/",
+    "/film/the-pied-piper-1972/",
+    "/film/the-seven-deadly-sins/",
+    "/film/dead-horizons/",
+    "/film/parking-1985/",
+    "/film/lust-1962/",
+    "/film/le-sabotier-du-val-de-loire/",
+    "/film/three-seats-for-the-26th/",
+    "/film/le-bel-indifferent/",
+    "/film/ars/",
+    "/film/turning-table/",
+    "/film/break-of-day/",
+    "/film/la-ballerine/",
+    "/film/attaque-nocturne/",
+    "/film/le-pont-de-mauves/",
+    "/film/musee-grevin/",
+    "/film/la-mere-et-lenfant/",
+    "/film/un-regard-sur-la-hollande/"
 ]

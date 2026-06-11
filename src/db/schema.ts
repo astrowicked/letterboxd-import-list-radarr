@@ -1,6 +1,6 @@
-import { integer, sqliteTable } from "drizzle-orm/sqlite-core";
+import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
 
 export const ids = sqliteTable("ids", {
-    letterboxdId: integer().primaryKey(),
+    letterboxdLink: text().primaryKey(),
     tmdbId: integer().notNull(),
 });

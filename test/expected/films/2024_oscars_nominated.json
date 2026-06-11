@@ -1,234 +1,60 @@
 [
-    {
-        "id": 784328,
-        "link": "/film/oppenheimer-2023/"
-    },
-    {
-        "id": 710352,
-        "link": "/film/poor-things-2023/"
-    },
-    {
-        "id": 398009,
-        "link": "/film/killers-of-the-flower-moon/"
-    },
-    {
-        "id": 277064,
-        "link": "/film/barbie/"
-    },
-    {
-        "id": 453069,
-        "link": "/film/maestro-2023/"
-    },
-    {
-        "id": 952812,
-        "link": "/film/american-fiction/"
-    },
-    {
-        "id": 822093,
-        "link": "/film/anatomy-of-a-fall/"
-    },
-    {
-        "id": 755564,
-        "link": "/film/the-holdovers/"
-    },
-    {
-        "id": 398800,
-        "link": "/film/the-zone-of-interest/"
-    },
-    {
-        "id": 674137,
-        "link": "/film/napoleon-2023/"
-    },
-    {
-        "id": 595029,
-        "link": "/film/the-creator-2023/"
-    },
-    {
-        "id": 503402,
-        "link": "/film/mission-impossible-dead-reckoning/"
-    },
-    {
-        "id": 806042,
-        "link": "/film/nyad/"
-    },
-    {
-        "id": 591053,
-        "link": "/film/past-lives/"
-    },
-    {
-        "id": 813840,
-        "link": "/film/society-of-the-snow/"
-    },
-    {
-        "id": 808726,
-        "link": "/film/rustin-2023/"
-    },
-    {
-        "id": 487538,
-        "link": "/film/the-color-purple-2023/"
-    },
-    {
-        "id": 754441,
-        "link": "/film/may-december/"
-    },
-    {
-        "id": 892991,
-        "link": "/film/el-conde/"
-    },
-    {
-        "id": 845706,
-        "link": "/film/godzilla-minus-one/"
-    },
-    {
-        "id": 379711,
-        "link": "/film/guardians-of-the-galaxy-vol-3/"
-    },
-    {
-        "id": 810003,
-        "link": "/film/golda-2023/"
-    },
-    {
-        "id": 265433,
-        "link": "/film/indiana-jones-and-the-dial-of-destiny/"
-    },
-    {
-        "id": 1058607,
-        "link": "/film/american-symphony/"
-    },
-    {
-        "id": 552632,
-        "link": "/film/flamin-hot/"
-    },
-    {
-        "id": 438692,
-        "link": "/film/the-boy-and-the-heron/"
-    },
-    {
-        "id": 878854,
-        "link": "/film/elemental-2023/"
-    },
-    {
-        "id": 865112,
-        "link": "/film/nimona-2023/"
-    },
-    {
-        "id": 753420,
-        "link": "/film/robot-dreams/"
-    },
-    {
-        "id": 497631,
-        "link": "/film/spider-man-across-the-spider-verse/"
-    },
-    {
-        "id": 954483,
-        "link": "/film/20-days-in-mariupol/"
-    },
-    {
-        "id": 905014,
-        "link": "/film/bobi-wine-the-peoples-president/"
-    },
-    {
-        "id": 931116,
-        "link": "/film/the-eternal-memory/"
-    },
-    {
-        "id": 964035,
-        "link": "/film/four-daughters-2023/"
-    },
-    {
-        "id": 914639,
-        "link": "/film/to-kill-a-tiger/"
-    },
-    {
-        "id": 842777,
-        "link": "/film/io-capitano/"
-    },
-    {
-        "id": 879229,
-        "link": "/film/perfect-days-2023/"
-    },
-    {
-        "id": 899037,
-        "link": "/film/the-teachers-lounge-2023/"
-    },
-    {
-        "id": 1056488,
-        "link": "/film/the-after-2023-1/"
-    },
-    {
-        "id": 977828,
-        "link": "/film/invincible-2022/"
-    },
-    {
-        "id": 874493,
-        "link": "/film/knight-of-fortune/"
-    },
-    {
-        "id": 1080205,
-        "link": "/film/red-white-and-blue-2023/"
-    },
-    {
-        "id": 829364,
-        "link": "/film/the-wonderful-story-of-henry-sugar/"
-    },
-    {
-        "id": 855064,
-        "link": "/film/letter-to-a-pig/"
-    },
-    {
-        "id": 937951,
-        "link": "/film/ninety-five-senses/"
-    },
-    {
-        "id": 1027821,
-        "link": "/film/our-uniform/"
-    },
-    {
-        "id": 855073,
-        "link": "/film/pachyderm/"
-    },
-    {
-        "id": 1098156,
-        "link": "/film/war-is-over-inspired-by-the-music-of-john-yoko/"
-    },
-    {
-        "id": 1072347,
-        "link": "/film/the-abcs-of-book-banning/"
-    },
-    {
-        "id": 1072381,
-        "link": "/film/the-barber-of-little-rock/"
-    },
-    {
-        "id": 1087783,
-        "link": "/film/island-in-between/"
-    },
-    {
-        "id": 1058626,
-        "link": "/film/the-last-repair-shop/"
-    },
-    {
-        "id": 978599,
-        "link": "/film/nai-nai-wai-po/"
-    },
-    {
-        "id": 474474,
-        "link": "/film/everything-everywhere-all-at-once/"
-    },
-    {
-        "id": 16530,
-        "link": "/film/all-quiet-on-the-western-front-2022/"
-    },
-    {
-        "id": 598882,
-        "link": "/film/the-banshees-of-inisherin/"
-    },
-    {
-        "id": 542032,
-        "link": "/film/elvis-2022/"
-    },
-    {
-        "id": 721288,
-        "link": "/film/the-fabelmans/"
-    }
+    "/film/oppenheimer-2023/",
+    "/film/poor-things-2023/",
+    "/film/killers-of-the-flower-moon/",
+    "/film/barbie/",
+    "/film/maestro-2023/",
+    "/film/american-fiction/",
+    "/film/anatomy-of-a-fall/",
+    "/film/the-holdovers/",
+    "/film/the-zone-of-interest/",
+    "/film/napoleon-2023/",
+    "/film/the-creator-2023/",
+    "/film/mission-impossible-dead-reckoning/",
+    "/film/nyad/",
+    "/film/past-lives/",
+    "/film/society-of-the-snow/",
+    "/film/rustin-2023/",
+    "/film/the-color-purple-2023/",
+    "/film/may-december/",
+    "/film/el-conde/",
+    "/film/godzilla-minus-one/",
+    "/film/guardians-of-the-galaxy-vol-3/",
+    "/film/golda-2023/",
+    "/film/indiana-jones-and-the-dial-of-destiny/",
+    "/film/american-symphony/",
+    "/film/flamin-hot/",
+    "/film/the-boy-and-the-heron/",
+    "/film/elemental-2023/",
+    "/film/nimona-2023/",
+    "/film/robot-dreams/",
+    "/film/spider-man-across-the-spider-verse/",
+    "/film/20-days-in-mariupol/",
+    "/film/bobi-wine-the-peoples-president/",
+    "/film/the-eternal-memory/",
+    "/film/four-daughters-2023/",
+    "/film/to-kill-a-tiger/",
+    "/film/io-capitano/",
+    "/film/perfect-days-2023/",
+    "/film/the-teachers-lounge-2023/",
+    "/film/the-after-2023-1/",
+    "/film/invincible-2022/",
+    "/film/knight-of-fortune/",
+    "/film/red-white-and-blue-2023/",
+    "/film/the-wonderful-story-of-henry-sugar/",
+    "/film/letter-to-a-pig/",
+    "/film/ninety-five-senses/",
+    "/film/our-uniform/",
+    "/film/pachyderm/",
+    "/film/war-is-over-inspired-by-the-music-of-john-yoko/",
+    "/film/the-abcs-of-book-banning/",
+    "/film/the-barber-of-little-rock/",
+    "/film/island-in-between/",
+    "/film/the-last-repair-shop/",
+    "/film/nai-nai-wai-po/",
+    "/film/everything-everywhere-all-at-once/",
+    "/film/all-quiet-on-the-western-front-2022/",
+    "/film/the-banshees-of-inisherin/",
+    "/film/elvis-2022/",
+    "/film/the-fabelmans/"
 ]

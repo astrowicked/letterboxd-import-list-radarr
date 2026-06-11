@@ -1,15 +1,15 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "aca97446-6b4e-4f29-9866-731d3fa8c5a6",
+  "id": "0badfcf8-410a-48b6-bbbc-7b34785df58b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "ids": {
       "name": "ids",
       "columns": {
-        "letterboxd_id": {
-          "name": "letterboxd_id",
-          "type": "integer",
+        "letterboxd_link": {
+          "name": "letterboxd_link",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false

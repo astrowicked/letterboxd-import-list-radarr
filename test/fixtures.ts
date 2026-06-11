@@ -15,8 +15,8 @@ const pages = [
         name: "list/2025_oscars_shorts.html",
     },
     {
-        url: "https://letterboxd.com/dave/list/official-top-250-narrative-feature-films/",
-        name: "list/top_250_narrative.html",
+        url: "https://letterboxd.com/official/list/letterboxds-top-500-films/",
+        name: "list/top_500_narrative.html",
     },
     {
         url: "https://letterboxd.com/director/jacques-demy/",

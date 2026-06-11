@@ -1,4 +1,4 @@
 CREATE TABLE `ids` (
-	`letterboxd_id` integer PRIMARY KEY NOT NULL,
+	`letterboxd_link` text PRIMARY KEY NOT NULL,
 	`tmdb_id` integer NOT NULL
 );

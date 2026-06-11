@@ -1,82 +1,22 @@
 [
-    {
-        "id": 1162401,
-        "link": "/film/the-man-who-could-not-remain-silent/"
-    },
-    {
-        "id": 1065133,
-        "link": "/film/im-not-a-robot-2023/"
-    },
-    {
-        "id": 1008715,
-        "link": "/film/a-lien/"
-    },
-    {
-        "id": 1232156,
-        "link": "/film/anuja/"
-    },
-    {
-        "id": 1196972,
-        "link": "/film/the-last-ranger/"
-    },
-    {
-        "id": 1042703,
-        "link": "/film/wander-to-wonder/"
-    },
-    {
-        "id": 1042711,
-        "link": "/film/in-the-shadow-of-the-cypress/"
-    },
-    {
-        "id": 1103896,
-        "link": "/film/yuck/"
-    },
-    {
-        "id": 1133693,
-        "link": "/film/magic-candies/"
-    },
-    {
-        "id": 1043418,
-        "link": "/film/beautiful-men-2023/"
-    },
-    {
-        "id": 999311,
-        "link": "/film/incident-2023/"
-    },
-    {
-        "id": 1168752,
-        "link": "/film/instruments-of-a-beating-heart/"
-    },
-    {
-        "id": 1086233,
-        "link": "/film/the-only-girl-in-the-orchestra/"
-    },
-    {
-        "id": 1245576,
-        "link": "/film/death-by-numbers/"
-    },
-    {
-        "id": 1182365,
-        "link": "/film/i-am-ready-warden/"
-    },
-    {
-        "id": 1071196,
-        "link": "/film/the-wild-robot/"
-    },
-    {
-        "id": 959829,
-        "link": "/film/memoir-of-a-snail/"
-    },
-    {
-        "id": 739451,
-        "link": "/film/flow-2024/"
-    },
-    {
-        "id": 834561,
-        "link": "/film/wallace-gromit-vengeance-most-fowl/"
-    },
-    {
-        "id": 921578,
-        "link": "/film/inside-out-2-2024/"
-    }
+    "/film/the-man-who-could-not-remain-silent/",
+    "/film/im-not-a-robot-2023/",
+    "/film/a-lien/",
+    "/film/anuja/",
+    "/film/the-last-ranger/",
+    "/film/wander-to-wonder/",
+    "/film/in-the-shadow-of-the-cypress/",
+    "/film/yuck/",
+    "/film/magic-candies/",
+    "/film/beautiful-men-2023/",
+    "/film/incident-2023/",
+    "/film/instruments-of-a-beating-heart/",
+    "/film/the-only-girl-in-the-orchestra/",
+    "/film/death-by-numbers/",
+    "/film/i-am-ready-warden/",
+    "/film/the-wild-robot/",
+    "/film/memoir-of-a-snail/",
+    "/film/flow-2024/",
+    "/film/wallace-gromit-vengeance-most-fowl/",
+    "/film/inside-out-2-2024/"
 ]

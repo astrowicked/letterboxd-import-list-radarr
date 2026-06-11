@@ -29,9 +29,9 @@ describe("Letterboxd HTML parser", () => {
         });
 
         test("Multi page ranked list", () => {
-            const html = readFileSync(join(import.meta.dir, "./fixtures/list/top_250_narrative.html"), "utf8");
+            const html = readFileSync(join(import.meta.dir, "./fixtures/list/top_500_narrative.html"), "utf8");
             const numberOfPages = getNumberOfPages(html);
-            expect(numberOfPages).toBe(3);
+            expect(numberOfPages).toBe(5);
         });
 
         test("Empty watchlist", () => {
@@ -88,7 +88,7 @@ describe("Letterboxd HTML parser", () => {
         });
 
         test("Multi page ranked list", () => {
-            const html = readFileSync(join(import.meta.dir, "./fixtures/list/top_250_narrative.html"), "utf8");
+            const html = readFileSync(join(import.meta.dir, "./fixtures/list/top_500_narrative.html"), "utf8");
             const filmsOnPage = getFilmsOnPage(html);
             expect(filmsOnPage).toBeArrayOfSize(100);
         });

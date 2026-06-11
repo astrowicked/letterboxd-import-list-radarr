@@ -1,5 +1,4 @@
 import { load } from "cheerio/slim";
-import type { LetterboxdItem } from "./types";
 
 export function getNumberOfPages(html: string): number {
     const $ = load(html);
@@ -12,28 +11,20 @@ export function getNumberOfPages(html: string): number {
     return isNaN(numberOfPages) ? 1 : numberOfPages;
 }
 
-export function getFilmsOnPage(html: string): LetterboxdItem[] {
+export function getFilmsOnPage(html: string): string[] {
     const $ = load(html);
     const { films } = $.extract({
         films: [
             {
                 selector: "div",
                 value: (el) => {
-                    const idString = $(el).attr("data-film-id");
-                    const id = idString ? parseInt(idString) : undefined;
-                    const link = $(el).attr("data-item-link");
-                    return { id, link };
+                    return $(el).attr("data-item-link");
                 },
             },
         ],
     });
 
-    return films.filter((item): item is LetterboxdItem => {
-        if (item.id === undefined || isNaN(item.id) || item.link === undefined) {
-            return false;
-        }
-        return true;
-    });
+    return films.filter((link) => link !== undefined);
 }
 
 export function extractTmdbId(html: string): number | null {

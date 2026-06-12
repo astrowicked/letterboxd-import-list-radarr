@@ -3,6 +3,7 @@ import { createSession, destroySession, fetchHtml } from "./fetch";
 import { logger } from "./logger";
 import { getFilmsOnPage, getNumberOfPages } from "./parse";
 import type { ImportListItem } from "./types";
+import "./cron";
 
 const server = Bun.serve({
     hostname: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",

@@ -39,7 +39,7 @@ async function handleRequest(req: Request): Promise<Response> {
         logger.info(`Fetching films on ${pagePath}`);
         const pageHtml = pageNumber === 1 ? html : await fetchHtml(pagePath, sessionId);
 
-        const filmsOnPage = getFilmsOnPage(pageHtml);
+        const filmsOnPage = [...new Set(getFilmsOnPage(pageHtml))];
         logger.debug(`Found ${filmsOnPage.length} films on ${pagePath}`);
 
         for (const film of filmsOnPage) {

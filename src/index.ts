@@ -28,33 +28,46 @@ async function handleRequest(req: Request): Promise<Response> {
     logger.info(`Creating FlareSolverr session ${sessionId}`);
     await createSession(sessionId);
 
-    const html = await fetchHtml(path, sessionId);
-
-    const numberOfPages = getNumberOfPages(html);
-    logger.debug(`List ${path} has ${numberOfPages} page(s)`);
-
     const importList: ImportListItem[] = [];
 
-    for (let pageNumber = 1; pageNumber <= numberOfPages; pageNumber++) {
-        const pagePath = pageNumber === 1 ? path : `${path}/page/${pageNumber}/`;
-        logger.info(`Fetching films on ${pagePath}`);
-        const pageHtml = pageNumber === 1 ? html : await fetchHtml(pagePath, sessionId);
+    // Any failure below (a slow Cloudflare challenge on a page or a film) used
+    // to throw uncaught and skip straight past destroySession, leaking the
+    // session across retries and silently killing the rest of the scrape.
+    // try/finally guarantees cleanup runs either way; individual page/film
+    // failures are caught below so one bad page/film just gets skipped.
+    try {
+        const html = await fetchHtml(path, sessionId);
+        const numberOfPages = getNumberOfPages(html);
+        logger.debug(`List ${path} has ${numberOfPages} page(s)`);
 
-        const filmsOnPage = [...new Set(getFilmsOnPage(pageHtml))];
-        logger.debug(`Found ${filmsOnPage.length} films on ${pagePath}`);
+        for (let pageNumber = 1; pageNumber <= numberOfPages; pageNumber++) {
+            const pagePath = pageNumber === 1 ? path : `${path}/page/${pageNumber}/`;
+            logger.info(`Fetching films on ${pagePath}`);
 
-        for (const film of filmsOnPage) {
-            const tmdbId = await getTmdbId(film, sessionId);
-            if (tmdbId !== null) {
-                importList.push({ id: tmdbId });
+            let pageHtml: string;
+            try {
+                pageHtml = pageNumber === 1 ? html : await fetchHtml(pagePath, sessionId);
+            } catch (error) {
+                logger.error(`Skipping page (${pagePath}) after fetch failure: ${(error as Error).message}`);
+                continue;
+            }
+
+            const filmsOnPage = [...new Set(getFilmsOnPage(pageHtml))];
+            logger.debug(`Found ${filmsOnPage.length} films on ${pagePath}`);
+
+            for (const film of filmsOnPage) {
+                const tmdbId = await getTmdbId(film, sessionId);
+                if (tmdbId !== null) {
+                    importList.push({ id: tmdbId });
+                }
             }
         }
+
+        logger.debug(`Matched ${importList.length} TMDB id(s) for list ${path}`);
+    } finally {
+        logger.info(`Destroying FlareSolverr session ${sessionId}`);
+        await destroySession(sessionId);
     }
-
-    logger.debug(`Matched ${importList.length} TMDB id(s) for list ${path}`);
-
-    logger.info(`Destroying FlareSolverr session ${sessionId}`);
-    await destroySession(sessionId);
 
     if (importList.length === 0) {
         const searchParams = new URL(req.url).searchParams;

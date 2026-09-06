@@ -21,7 +21,18 @@ export async function getTmdbId(letterboxdLink: string, sessionId: string): Prom
 
     logger.debug(`Film not in cache (${letterboxdLink})`);
 
-    const html = await fetchHtml(letterboxdLink, sessionId);
+    let html: string;
+    try {
+        html = await fetchHtml(letterboxdLink, sessionId);
+    } catch (error) {
+        // A single film failing to fetch (e.g. a slow Cloudflare challenge
+        // timing out) must not kill the rest of the list - skip this one
+        // film and let the caller move on to the next.
+        logger.error(
+            `Skipping film (${letterboxdLink}) after fetch failure: ${(error as Error).message}`,
+        );
+        return null;
+    }
     const tmdbId = extractTmdbId(html);
     if (tmdbId !== null) {
         logger.success(`Found TMDB id for film (${letterboxdLink}) [tmdb:${tmdbId}]`);

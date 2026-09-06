@@ -42,9 +42,15 @@ export async function fetchHtml(path: string, sessionId: string): Promise<string
     }
 
     const flaresolverrJson = (await res.json()) as FlareSolverrResponse;
-    if (flaresolverrJson.status !== "ok") {
-        logger.error(
-            `FlareSolverr error fetching ${url} with FlareSolverr: ${flaresolverrJson.status} ${flaresolverrJson.message}`,
+    if (flaresolverrJson.status !== "ok" || flaresolverrJson.solution === undefined) {
+        // FlareSolverr omits `solution` entirely on failure (e.g. a challenge
+        // timeout) - accessing flaresolverrJson.solution.status here used to
+        // throw an uncaught TypeError that silently killed the whole
+        // request's remaining work (never reaching destroySession), instead
+        // of just failing this one film. Throw a clean, catchable error so
+        // callers can skip this one URL and continue.
+        throw new Error(
+            `FlareSolverr error fetching ${url}: ${flaresolverrJson.status} ${flaresolverrJson.message}`,
         );
     }
 

@@ -40,17 +40,30 @@ async function handleRequest(req: Request): Promise<Response> {
         const numberOfPages = getNumberOfPages(html);
         logger.debug(`List ${path} has ${numberOfPages} page(s)`);
 
-        for (let pageNumber = 1; pageNumber <= numberOfPages; pageNumber++) {
-            const pagePath = pageNumber === 1 ? path : `${path}/page/${pageNumber}/`;
-            logger.info(`Fetching films on ${pagePath}`);
+        // Page HTML isn't cached (only individual film TMDB lookups are), so
+        // on a warm cache the dominant cost is purely these page fetches -
+        // fetching them sequentially took 60-90s for a ~60-page list, well
+        // past callers' (e.g. Radarr's) own HTTP timeouts. Concurrent
+        // requests to the same FlareSolverr session work fine in practice
+        // (verified live), so fetch all pages in parallel instead.
+        const pagePaths = Array.from({ length: numberOfPages }, (_, i) =>
+            i === 0 ? path : `${path}/page/${i + 1}/`,
+        );
+        logger.info(`Fetching ${numberOfPages} page(s) of ${path} in parallel`);
+        const pageResults = await Promise.all(
+            pagePaths.map(async (pagePath, i) => {
+                if (i === 0) return { pagePath, html };
+                try {
+                    return { pagePath, html: await fetchHtml(pagePath, sessionId) };
+                } catch (error) {
+                    logger.error(`Skipping page (${pagePath}) after fetch failure: ${(error as Error).message}`);
+                    return { pagePath, html: null };
+                }
+            }),
+        );
 
-            let pageHtml: string;
-            try {
-                pageHtml = pageNumber === 1 ? html : await fetchHtml(pagePath, sessionId);
-            } catch (error) {
-                logger.error(`Skipping page (${pagePath}) after fetch failure: ${(error as Error).message}`);
-                continue;
-            }
+        for (const { pagePath, html: pageHtml } of pageResults) {
+            if (pageHtml === null) continue;
 
             const filmsOnPage = [...new Set(getFilmsOnPage(pageHtml))];
             logger.debug(`Found ${filmsOnPage.length} films on ${pagePath}`);

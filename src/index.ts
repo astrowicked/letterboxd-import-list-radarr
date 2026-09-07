@@ -9,7 +9,13 @@ const server = Bun.serve({
     hostname: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
     development: process.env.NODE_ENV !== "production",
     port: process.env.NODE_ENV === "production" ? 80 : 3000,
-    idleTimeout: 60,
+    // handleRequest doesn't stream anything until the whole scrape finishes -
+    // the client sees zero bytes the entire time. A large watchlist (~40+
+    // pages) can legitimately take 100s+ even fully cached, so the default
+    // 60s idle timeout was killing every request from the server side
+    // before it could finish (verified live - this is the actual root cause,
+    // not a client/kubectl quirk). 255 is Bun's maximum for this field.
+    idleTimeout: 255,
     fetch: handleRequest,
     error(error) {
         logger.error(error.message);
